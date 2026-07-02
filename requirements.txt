@@ -1,0 +1,11 @@
+pandas
+numpy
+sentence-transformers
+deep-translator
+faiss-cpu
+scikit-learn
+beautifulsoup4
+gdown
+transformers
+tqdm
+ipywidgets
