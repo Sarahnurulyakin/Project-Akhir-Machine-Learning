@@ -1,4 +1,4 @@
-# Stack Overflow Q&A Search Engine: Hybrid Semantic-Lexical Search dengan Query Translation
+# Model Pencarian Q&A Stack Overflow: Hybrid Semantic-Lexical Search dengan Query Translation
 
 Proyek Akhir | Mata Kuliah: **Machine Learning**  
 Program Studi Teknik Informatika, **UIN Sunan Gunung Djati Bandung**
@@ -6,9 +6,9 @@ Program Studi Teknik Informatika, **UIN Sunan Gunung Djati Bandung**
 ---
 
 ## 📌 Deskripsi Proyek
-Proyek ini mengimplementasikan **Mesin Pencari (Search Engine) Tanya-Jawab (Q&A) Stack Overflow** berbasis kecerdasan buatan. Sistem ini menggabungkan pencarian berbasis kata kunci eksak (**Lexical Search via TF-IDF**) dengan pencarian berbasis makna konteks (**Semantic Search via Sentence-BERT**) untuk memberikan hasil pencarian yang sangat relevan dan presisi.
+Proyek ini mengimplementasikan **Model Pencarian (Search Model) Tanya-Jawab (Q&A) Stack Overflow** berbasis kecerdasan buatan. Model ini menggabungkan pencarian berbasis kata kunci eksak (**Lexical Search via TF-IDF**) dengan pencarian berbasis makna konteks (**Semantic Search via Sentence-BERT**) untuk memberikan hasil pencarian yang sangat relevan dan presisi.
 
-Selain itu, sistem ini dilengkapi dengan **penerjemah otomatis** terintegrasi menggunakan Google Translate API, memungkinkan pengguna mencari solusi pemrograman menggunakan **Bahasa Indonesia**, yang kemudian diterjemahkan ke Bahasa Inggris secara otomatis sebelum diproses oleh mesin pencari Stack Overflow (yang datanya secara default berbahasa Inggris).
+Selain itu, model ini dilengkapi dengan **penerjemah otomatis** terintegrasi menggunakan Google Translate API, memungkinkan pengguna mencari solusi pemrograman menggunakan **Bahasa Indonesia**, yang kemudian diterjemahkan ke Bahasa Inggris secara otomatis sebelum diproses oleh model pencarian Stack Overflow (yang datanya secara default berbahasa Inggris).
 
 ---
 
@@ -34,36 +34,7 @@ Selain itu, sistem ini dilengkapi dengan **penerjemah otomatis** terintegrasi me
 
 ---
 
-## 🏗️ Arsitektur Sistem
 
-Berikut adalah alur bagaimana sistem memproses kueri pencarian dari pengguna hingga mengembalikan hasil pencarian terbaik:
-
-```mermaid
-graph TD
-    A[Input Kueri Pengguna] --> B{Apakah Bahasa Indonesia?}
-    B -- Ya --> C[Translasi Otomatis ke Inggris via GoogleTranslator]
-    B -- Tidak --> D[Gunakan Kueri Asli]
-    C --> E[Cek Panjang Kueri < Max SBERT Token]
-    D --> E
-    E --> F[Ekstrak Fitur Kueri]
-    F --> G[TF-IDF Vectorization]
-    F --> H[Sentence-BERT Embedding]
-    G --> I[Hitung Cosine Similarity TF-IDF]
-    H --> J{Apakah Ada Filter Tag?}
-    J -- Ya --> K[Cari via Local FAISS Index spesifik Tag]
-    J -- Tidak --> L[Cari via Global FAISS Index]
-    I --> M[Normalisasi Skor TF-IDF]
-    K --> N[Normalisasi Skor SBERT]
-    L --> N
-    O[Log-transformed Answer Score] --> P[Normalisasi Skor Kualitas Jawaban]
-    M --> Q[Hybrid Fusion Score Calculation]
-    N --> Q
-    P --> Q
-    Q --> R[Pengurutan Hasil Pencarian Top-K]
-    R --> S[Output Hasil Tanya-Jawab Stack Overflow]
-```
-
----
 
 ## 📊 Detail Perhitungan Skor Hybrid (Fusion)
 
@@ -81,10 +52,11 @@ $$\text{Fusion Score} = \alpha \times \text{Skor TF-IDF} + \beta \times \text{Sk
 
 ```text
 ├── Dataset/
-│   ├── dataset.csv            # Dataset mentah Stack Overflow (Diabaikan oleh Git)
-│   └── dataset_clean.csv      # Dataset bersih hasil pra-pemrosesan (Diabaikan oleh Git)
+│   ├── dataset.csv            # Dataset mentah Stack Overflow
+│   └── dataset_clean.csv      # Dataset bersih hasil pra-pemrosesan
 ├── Model/
 │   ├── Model Fix.ipynb        # Jupyter Notebook utama (pelatihan & evaluasi)
+│   └── model.py               # Skrip Python utama model (pelatihan, pencarian, & evaluasi)
 ├── README.md                  # Dokumentasi proyek (File ini)
 └── requirements.txt           # Daftar dependensi Python
 ```
@@ -98,7 +70,7 @@ Pastikan Anda telah menginstal Python versi 3.8 atau yang lebih baru pada komput
 
 ### 2. Kloning Repositori
 ```bash
-git clone https://github.com/username/Project-Akhir-Machine-Learning.git
+git clone https://github.com/Sarahnurulyakin/Project-Akhir-Machine-Learning.git
 cd Project-Akhir-Machine-Learning
 ```
 
@@ -113,13 +85,32 @@ pip install -r requirements.txt
 2. Buat direktori bernama `Dataset` di direktori utama proyek.
 3. Pindahkan file dataset Anda ke dalam folder tersebut dan beri nama `dataset.csv`.
 
-### 5. Menjalankan Notebook
+### 5. Menjalankan Model
+
+Anda dapat menjalankan model ini melalui Jupyter Notebook atau langsung menggunakan skrip Python (`model.py`).
+
+#### A. Melalui Jupyter Notebook
 Jalankan Jupyter Notebook dan buka file di dalam direktori `Model`:
 ```bash
 jupyter notebook
 ```
 Buka berkas `Model/Model Fix.ipynb` dan jalankan semua cell untuk memuat dataset, melatih model TF-IDF, menghitung embedding SBERT, membangun indeks FAISS, dan menguji fungsi pencarian.
 
+#### B. Melalui Skrip Python (CLI)
+Skrip Python `Model/model.py` mendukung pelatihan, pencarian cepat (menggunakan model yang telah diserialisasi), dan evaluasi instan.
+
+1. **Pelatihan (Training)**:
+   ```bash
+   python Model/model.py train
+   ```
+2. **Pencarian (Search)**:
+   ```bash
+   python Model/model.py search "bagaimana cara python terhubung ke mysql" --tag python
+   ```
+3. **Evaluasi (Evaluation)**:
+   ```bash
+   python Model/model.py evaluate
+   ```
 ---
 
 ## 📈 Evaluasi Model
@@ -142,5 +133,3 @@ Hasil pengujian terhadap query evaluasi standar:
 
 ---
 
-## 👥 Kontributor
-*   **Sarah Ny** (NIM/UIN Sunan Gunung Djati Bandung) - *Developer Utama & Machine Learning Engineer*
