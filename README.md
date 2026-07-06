@@ -6,7 +6,7 @@ Program Studi Teknik Informatika, **UIN Sunan Gunung Djati Bandung**
 ---
 
 ## 📌 Deskripsi Proyek
-Proyek ini mengimplementasikan **Model Pencarian (Search Model) Tanya-Jawab (Q&A) Stack Overflow** berbasis kecerdasan buatan. Model ini menggabungkan pencarian berbasis kata kunci eksak (**Lexical Search via TF-IDF**) dengan pencarian berbasis makna konteks (**Semantic Search via Sentence-BERT**) untuk memberikan hasil pencarian yang sangat relevan.
+Proyek ini mengimplementasikan **Model Pencarian (Search Model) Tanya-Jawab (Q&A) Stack Overflow** berbasis kecerdasan buatan. Model ini menggabungkan pencarian berbasis kata kunci eksak (**Lexical Search via TF-IDF**) dengan pencarian berbasis makna konteks (**Semantic Search via Sentence-BERT**) untuk memberikan hasil pencarian yang sangat relevan dan presisi.
 
 Selain itu, model ini dilengkapi dengan **penerjemah otomatis** terintegrasi menggunakan Google Translate API, memungkinkan pengguna mencari solusi pemrograman menggunakan **Bahasa Indonesia**, yang kemudian diterjemahkan ke Bahasa Inggris secara otomatis sebelum diproses oleh model pencarian Stack Overflow (yang datanya secara default berbahasa Inggris).
 
